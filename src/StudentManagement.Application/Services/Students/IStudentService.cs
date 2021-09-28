@@ -7,5 +7,6 @@ namespace StudentManagement.Application.Services
     public interface IStudentService
     {
         Task<List<StudentDto>> GetAsync();
+        Task<StudentDto> CreateAsync(AddOrUpdateStudentDto dto);
     }
 }

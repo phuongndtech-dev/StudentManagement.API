@@ -26,8 +26,7 @@ namespace StudentManagement.API
             services.AddControllers();
             services.AddInfrastructure(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddServices();
-            services.AddRepositories();
+            services.AddApplications();
             services.AddSwaggerGen();
         }
 
