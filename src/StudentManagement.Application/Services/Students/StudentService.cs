@@ -30,6 +30,11 @@ namespace StudentManagement.Application.Services
             return response;
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            await _studentRepository.DeleteAsync(id);
+        }
+
         public async Task<List<StudentDto>> GetAsync()
         {
             var datas = await _studentRepository.GetAsync();

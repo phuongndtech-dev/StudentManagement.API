@@ -32,6 +32,17 @@ namespace StudentManagement.Application.Repositories
             return dataResponse;
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            var storeProc = "sp_DeleteStudent";
+
+            DynamicParameters dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await connection.ExecuteAsync(storeProc, dynamicParameters, commandType: CommandType.StoredProcedure);
+        }
+
         public async Task<List<Student>> GetAsync()
         {
             string sql = "SELECT * FROM Student";
@@ -45,15 +56,15 @@ namespace StudentManagement.Application.Repositories
         {
             var storeProc = "sp_UpdateStudent";
 
-            DynamicParameters parameterDynamic = new DynamicParameters();
+            DynamicParameters dynamicParameters = new DynamicParameters();
 
-            parameterDynamic.Add("@id", dto.Id);
-            parameterDynamic.Add("@name", dto.Name);
-            parameterDynamic.Add("@year", dto.Year);
-            parameterDynamic.Add("@address", dto.Address);
-            parameterDynamic.Add("@email", dto.Email);
+            dynamicParameters.Add("@id", dto.Id);
+            dynamicParameters.Add("@name", dto.Name);
+            dynamicParameters.Add("@year", dto.Year);
+            dynamicParameters.Add("@address", dto.Address);
+            dynamicParameters.Add("@email", dto.Email);
 
-            await connection.ExecuteAsync(storeProc, parameterDynamic, commandType: CommandType.StoredProcedure);
+            await connection.ExecuteAsync(storeProc, dynamicParameters, commandType: CommandType.StoredProcedure);
 
             var dataResponse = await GetStudentByIdAsync(dto.Id);
 

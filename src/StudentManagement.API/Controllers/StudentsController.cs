@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagement.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/students")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace StudentManagement.API.Controllers
             _studentService = studentService;
         }
 
-        [HttpGet()]
+        [HttpGet("")]
         public async Task<IActionResult> Get()
             => Ok(await _studentService.GetAsync());
 
@@ -35,6 +35,14 @@ namespace StudentManagement.API.Controllers
             var data = await _studentService.UpdateAsync(dto, id);
 
             return Ok(data);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _studentService.DeleteAsync(id);
+
+            return Ok();
         }
     }
 }

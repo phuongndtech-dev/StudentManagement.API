@@ -10,5 +10,6 @@ namespace StudentManagement.Application.Services
         Task<List<StudentDto>> GetAsync();
         Task<StudentDto> CreateAsync(AddOrUpdateStudentDto dto);
         Task<StudentDto> UpdateAsync(AddOrUpdateStudentDto dto, Guid id);
+        Task DeleteAsync(Guid id);
     }
 }
