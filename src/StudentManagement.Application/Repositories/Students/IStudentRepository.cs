@@ -9,5 +9,6 @@ namespace StudentManagement.Application.Repositories
     {
         Task<List<Student>> GetAsync();
         Task<Student> CreateAsync(AddOrUpdateStudentDto dto);
+        Task<Student> UpdateAsync(AddOrUpdateStudentDto dto);
     }
 }

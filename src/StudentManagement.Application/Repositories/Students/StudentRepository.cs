@@ -2,6 +2,7 @@
 using StudentManagement.Application.DTOs;
 using StudentManagement.Application.Helpers;
 using StudentManagement.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,18 +13,21 @@ namespace StudentManagement.Application.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
+        private readonly SqlConnection connection;
+
+        public StudentRepository()
+        {
+            connection = new SqlConnection(FileHelper.GetConnectionString());
+        }
+
         public async Task<Student> CreateAsync(AddOrUpdateStudentDto dto)
         {
             string sqlInsert = @$"INSERT INTO Student (ID, NAME, YEAR, ADDRESS, EMAIL) 
                                   VALUES('{dto.Id}', '{dto.Name}', '{dto.Year}', '{dto.Address}','{dto.Email}')";
 
-            string sqlQuery = $"SELECT * FROM Student WHERE Id = '{dto.Id}'";
+            await connection.ExecuteAsync(sqlInsert, CommandType.Text);
 
-            using SqlConnection connection = new SqlConnection(FileHelper.GetConnectionString());
-
-            var student = await connection.ExecuteAsync(sqlInsert, CommandType.Text);
-
-            var dataResponse = await connection.QueryFirstAsync<Student>(sqlQuery, CommandType.Text);
+            var dataResponse = await GetStudentByIdAsync(dto.Id);
 
             return dataResponse;
         }
@@ -32,11 +36,37 @@ namespace StudentManagement.Application.Repositories
         {
             string sql = "SELECT * FROM Student";
 
-            using SqlConnection connection = new SqlConnection(FileHelper.GetConnectionString());
-
             var student = await connection.QueryAsync<Student>(sql, CommandType.Text);
 
             return student.ToList();
+        }
+
+        public async Task<Student> UpdateAsync(AddOrUpdateStudentDto dto)
+        {
+            var storeProc = "sp_UpdateStudent";
+
+            DynamicParameters parameterDynamic = new DynamicParameters();
+
+            parameterDynamic.Add("@id", dto.Id);
+            parameterDynamic.Add("@name", dto.Name);
+            parameterDynamic.Add("@year", dto.Year);
+            parameterDynamic.Add("@address", dto.Address);
+            parameterDynamic.Add("@email", dto.Email);
+
+            await connection.ExecuteAsync(storeProc, parameterDynamic, commandType: CommandType.StoredProcedure);
+
+            var dataResponse = await GetStudentByIdAsync(dto.Id);
+
+            return dataResponse;
+        }
+
+        private async Task<Student> GetStudentByIdAsync(Guid id)
+        {
+            string sqlQuery = $"SELECT * FROM Student WHERE Id = '{id}'";
+
+            var student = await connection.QueryFirstAsync<Student>(sqlQuery, CommandType.Text);
+
+            return student;
         }
     }
 }

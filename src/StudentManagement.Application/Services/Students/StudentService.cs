@@ -38,5 +38,16 @@ namespace StudentManagement.Application.Services
 
             return response;
         }
+
+        public async Task<StudentDto> UpdateAsync(AddOrUpdateStudentDto dto, Guid id)
+        {
+            dto.Id = id;
+
+            var data = await _studentRepository.UpdateAsync(dto);
+
+            var response = _mapper.Map<StudentDto>(data);
+
+            return response;
+        }
     }
 }

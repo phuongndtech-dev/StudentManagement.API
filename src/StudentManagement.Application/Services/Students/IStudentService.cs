@@ -1,4 +1,5 @@
 ﻿using StudentManagement.Application.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,5 +9,6 @@ namespace StudentManagement.Application.Services
     {
         Task<List<StudentDto>> GetAsync();
         Task<StudentDto> CreateAsync(AddOrUpdateStudentDto dto);
+        Task<StudentDto> UpdateAsync(AddOrUpdateStudentDto dto, Guid id);
     }
 }
