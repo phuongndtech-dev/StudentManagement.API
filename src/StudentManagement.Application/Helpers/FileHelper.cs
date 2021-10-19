@@ -1,10 +1,12 @@
-﻿namespace StudentManagement.Application.Helpers
+﻿using Microsoft.Extensions.Configuration;
+
+namespace StudentManagement.Application.Helpers
 {
     public static class FileHelper
     {
-        public static string GetConnectionString()
+        public static string GetConnectionString(IConfiguration configuration)
         {
-            var connectionString = @"Server=PHUONGND_TECH\SQLEXPRESS;Database=StudentManagement;Trusted_Connection=True;";
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             return connectionString;
         }

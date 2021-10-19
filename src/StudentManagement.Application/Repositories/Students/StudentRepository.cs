@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using StudentManagement.Application.DTOs;
 using StudentManagement.Application.Helpers;
 using StudentManagement.Domain.Entities;
@@ -15,9 +16,13 @@ namespace StudentManagement.Application.Repositories
     {
         private readonly SqlConnection connection;
 
-        public StudentRepository()
+        private readonly IConfiguration _configuration;
+
+        public StudentRepository(IConfiguration configuration)
         {
-            connection = new SqlConnection(FileHelper.GetConnectionString());
+            _configuration = configuration;
+
+            connection = new SqlConnection(FileHelper.GetConnectionString(_configuration));
         }
 
         public async Task<Student> CreateAsync(AddOrUpdateStudentDto dto)

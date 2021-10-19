@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\Configurations\" />
+    <Compile Remove="Persistence\Configurations\**" />
+    <EmbeddedResource Remove="Persistence\Configurations\**" />
+    <None Remove="Persistence\Configurations\**" />
   </ItemGroup>
 
   <ItemGroup>

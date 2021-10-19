@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudentManagement.Application.Interfaces;
 using StudentManagement.Infrastructure.Persistence;
-using System;
 
 namespace StudentManagement.Infrastructure
 {
