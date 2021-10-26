@@ -23,26 +23,18 @@ namespace StudentManagement.API.Controllers
 
         [HttpPost("")]
         public async Task<IActionResult> Create([FromBody] AddOrUpdateStudentDto dto)
-        {
-            var data = await _studentService.CreateAsync(dto);
-
-            return Ok(data);
-        }
+            => Ok(await _studentService.CreateAsync(dto));
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] AddOrUpdateStudentDto dto, Guid id)
-        {
-            var data = await _studentService.UpdateAsync(dto, id);
-
-            return Ok(data);
-        }
+            => Ok(await _studentService.UpdateAsync(dto, id));
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _studentService.DeleteAsync(id);
-
-            return Ok();
+            
+            return NoContent();
         }
     }
 }
